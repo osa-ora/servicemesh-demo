@@ -49,6 +49,7 @@ Test the application while using v1 (on the same cluster) then v2 (on the remove
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: LOCAL1}","Welcome":" guest"}%
 oc set env deployment/front-app END_POINT=http://loyalty-v2:8080/loyalty/balance/
+
 //wait for the new version deployment
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: REMOTE2}","Welcome":" guest"}
@@ -123,10 +124,16 @@ Test the application while connecting to local backend service v1 (on the same c
 //wait for app deployment completed ... then test it using curl ...
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: LOCAL1}","Welcome":" guest"}%
+
 oc scale deployment/loyalty-local-v1 --replicas=0 -n dev-local
 //test the automatic failover ..
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: REMOTE1}","Welcome":" guest"}
+
+//you can revert this and see how automatic switch back to the local service:
+oc scale deployment/loyalty-local-v1 --replicas=1 -n dev-local
+curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
+// outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: LOCAL1}","Welcome":" guest"}%
 //end of demo
 ```
 To clean everything ..
