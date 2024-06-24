@@ -22,7 +22,10 @@ curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 
 # Demo for Skupper (TBC)
 
-## Basic Scenario: Connect to remote service.
+## Basic Scenario: Connect to remote service
+
+In this scenario we will use a local service v1 or switch to a remote service v2 (in another OCP cluster). Both will be running and the front end service can connect to the selected configured service.
+
 ```
 oc login //first cluster 
 oc new-project dev-local
@@ -64,6 +67,9 @@ curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 
 ```
 ## Basic Scenario: Connect to local & remote service.
+
+In this scenario we will use a local service v1 and automatic failover to a remote service v1 (in another OCP cluster). We will simulate this with scale the local service to zero replica.
+
 
 ```
 oc login //first cluster 
