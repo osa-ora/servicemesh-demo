@@ -102,7 +102,7 @@ skupper service bind loyalty-v1 service loyalty-local-v1
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: LOCAL1}","Welcome":" guest"}%
 oc scale deployment/loyalty-local-v1 --replicas=0 -n dev-local
-//wait for the new version deployment
+//test the automatic failover ..
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: REMOTE1}","Welcome":" guest"}
 //end of demo
