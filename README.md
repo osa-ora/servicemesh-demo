@@ -1,30 +1,11 @@
-# Demo For Service Mesh (TBC)
-
-
-Traditional Way of Deploying Application and Switch Version ... (To be completed)
-```
-oc new-project dev
-oc new-app --name=loyalty-v1 java~https://github.com/osa-ora/ocp-demos--context-dir=backend -e APP_VERSION=1.2
-oc new-app --name=loyalty-v2 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=2.1
-oc new-app --name=front-app java~https://github.com/osa-ora/ocp-demos --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
-oc label deployment/loyalty-v2 app.kubernetes.io/part-of=my-application
-oc label deployment/loyalty-v1 app.kubernetes.io/part-of=my-application
-oc label deployment/front-app app.kubernetes.io/part-of=my-application
-oc expose svc/front-app
-//wait for app deployment completed ... then test it using curl ...
-curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
-// outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: 1.2}","Welcome":" guest"}%
-oc set env deployment/front-app END_POINT=http://loyalty-v2:8080/loyalty/balance/
-//wait for the new version deployment
-curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
-// outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: 2.1}","Welcome":" guest"}
-```
-
-# Demo for Skupper (TBC)
+# Demo for Skupper
 
 ## Basic Scenario 1: Connect to a remote service
 
 In this scenario we will use a local service v1 or switch to a remote service v2 (in another OCP cluster). Both will be running and the front end service can connect to the selected configured service.
+
+<img width="572" alt="Screenshot 2024-06-24 at 6 42 55 PM" src="https://github.com/osa-ora/ocp-demos/assets/18471537/2a85e212-42ed-4c90-83c0-7e934d01ec59">
+
 
 ** Steps:
 
@@ -90,6 +71,9 @@ oc delete project dev-remote
 ## Basic Scenario 2: Connect to local & remote service.
 
 In this scenario we will use a local service v1 and automatic failover to a remote service v1 (in another OCP cluster). We will simulate this with scale the local service to zero replica.
+
+<img width="558" alt="Screenshot 2024-06-24 at 6 43 33 PM" src="https://github.com/osa-ora/ocp-demos/assets/18471537/35acaa76-1c26-4b9d-8a94-41de6b0bbb65">
+
 
 ** Steps:
 
@@ -160,3 +144,24 @@ oc delete project dev-remote
 ```
 
 
+# Demo For Service Mesh (TBC)
+
+
+Traditional Way of Deploying Application and Switch Version ... (To be completed)
+```
+oc new-project dev
+oc new-app --name=loyalty-v1 java~https://github.com/osa-ora/ocp-demos--context-dir=backend -e APP_VERSION=1.2
+oc new-app --name=loyalty-v2 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=2.1
+oc new-app --name=front-app java~https://github.com/osa-ora/ocp-demos --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
+oc label deployment/loyalty-v2 app.kubernetes.io/part-of=my-application
+oc label deployment/loyalty-v1 app.kubernetes.io/part-of=my-application
+oc label deployment/front-app app.kubernetes.io/part-of=my-application
+oc expose svc/front-app
+//wait for app deployment completed ... then test it using curl ...
+curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
+// outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: 1.2}","Welcome":" guest"}%
+oc set env deployment/front-app END_POINT=http://loyalty-v2:8080/loyalty/balance/
+//wait for the new version deployment
+curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
+// outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: 2.1}","Welcome":" guest"}
+```
