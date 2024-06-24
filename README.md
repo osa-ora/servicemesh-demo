@@ -46,6 +46,7 @@ skupper status
 skupper link create secret_connect.token --name first-to-second-link
 //to delete this link: skupper link delete first-to-second-link
 skupper expose service/loyalty-v2-remote --address loyalty-v2 --port 8080
+//skupper expose deployment/loyalty-v2-remote --address loyalty-v2  --port 8080
 //to delete this service: skupper service delete loyalty-v2
 
 //wait for app deployment completed ... then test it using curl ...
