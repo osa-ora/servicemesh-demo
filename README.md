@@ -21,6 +21,8 @@ curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 ```
 
 # Demo for Skupper (TBC)
+
+## Basic Scenario: Connect to remote service.
 ```
 oc login //first cluster 
 oc new-project dev-local
@@ -61,4 +63,52 @@ curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 //to clean: skupper delete on both sides and oc project delete 
 
 ```
+## Basic Scenario: Connect to local & remote service.
+
+```
+oc login //first cluster 
+oc new-project dev-local
+oc new-app --name=loyalty-local-v1 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=LOCAL1
+oc new-app --name=front-app java~https://github.com/osa-ora/ocp-demos --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
+//oc new-app --name=loyalty-v2-local java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE2
+oc label deployment/loyalty-v1 app.kubernetes.io/part-of=my-application
+oc label deployment/front-app app.kubernetes.io/part-of=my-application
+oc expose svc/front-app
+skupper init --enable-console --enable-flow-collector --console-auth unsecured
+//skupper init --enable-console --enable-flow-collector --console-auth internal --console-user <username> --console-password <password> 
+//skupper init --enable-console --enable-flow-collector --console-auth openshift
+skupper token create secret_connect.token
+skupper status
+
+oc login //second cluster 
+oc new-project dev-remote
+//oc new-app --name=loyalty-v2 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE2
+oc new-app --name=loyalty-remote-v1 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE1
+oc label deployment/loyalty-v2 app.kubernetes.io/part-of=my-application
+
+skupper init
+skupper status
+skupper link create secret_connect.token --name first-to-second-link
+//to delete this link: skupper link delete first-to-second-link
+skupper service create loyalty-v1 8080 --protocol http
+skupper service bind loyalty-v1 service loyalty-remote-v1
+//to delete this service: skupper service delete loyalty-v2
+
+oc login //first cluster 
+oc project dev-local
+skupper service bind loyalty-v1 service loyalty-local-v1
+
+//wait for app deployment completed ... then test it using curl ...
+curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
+// outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: LOCAL1}","Welcome":" guest"}%
+oc scale deployment/loyalty-local-v1 --replicas=0 -n dev-local
+//wait for the new version deployment
+curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
+// outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: REMOTE1}","Welcome":" guest"}
+//end of demo
+//to clean: skupper delete on both sides and oc project delete 
+
+```
+
+
 
