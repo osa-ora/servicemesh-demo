@@ -29,7 +29,9 @@ oc new-app --name=front-app java~https://github.com/osa-ora/ocp-demos --context-
 oc label deployment/loyalty-v1 app.kubernetes.io/part-of=my-application
 oc label deployment/front-app app.kubernetes.io/part-of=my-application
 oc expose svc/front-app
-skupper init --enable-console --enable-flow-collector --console-auth unsecured
+//skupper init --enable-console --enable-flow-collector --console-auth unsecured
+//skupper init --enable-console --enable-flow-collector --console-auth internal --console-user <username> --console-password <password> 
+skupper init --enable-console --enable-flow-collector --console-auth openshift
 skupper token create secret_connect.token
 skupper status
 
@@ -41,6 +43,7 @@ oc label deployment/loyalty-v2 app.kubernetes.io/part-of=my-application
 skupper init --ingress none
 skupper status
 skupper link create secret_connect.token --name first-to-second-link
+//to delete this link: skupper link delete first-to-second-link
 skupper expose host host.containers.internal --address loyalty-v2 --port 8080 --protocol http
 
 oc login //first cluster 
@@ -56,5 +59,8 @@ oc set env deployment/front-app END_POINT=http://loyalty-v2:8080/loyalty/balance
 //wait for the new version deployment
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: REMOTE2}","Welcome":" guest"}
+//end of demo
+//skupper delete on both sides
+
 ```
 
