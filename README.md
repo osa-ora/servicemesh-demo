@@ -26,6 +26,7 @@ oc login //first cluster
 oc new-project dev-local
 oc new-app --name=loyalty-v1 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=LOCAL1
 oc new-app --name=front-app java~https://github.com/osa-ora/ocp-demos --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
+//oc new-app --name=loyalty-v2-local java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE2
 oc label deployment/loyalty-v1 app.kubernetes.io/part-of=my-application
 oc label deployment/front-app app.kubernetes.io/part-of=my-application
 oc expose svc/front-app
