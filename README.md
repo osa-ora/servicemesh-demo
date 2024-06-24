@@ -31,7 +31,6 @@ Login to remote cluster and deploy v2 of the backend application
 ```
 oc login //second cluster 
 oc new-project dev-remote
-//oc new-app --name=loyalty-v2 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE2
 oc new-app --name=loyalty-v2-remote java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE2
 oc label deployment/loyalty-v2 app.kubernetes.io/part-of=my-application
 ```
@@ -143,9 +142,7 @@ skupper delete
 oc delete project dev-remote
 ```
 
-
 # Demo For Service Mesh (TBC)
-
 
 Traditional Way of Deploying Application and Switch Version ... (To be completed)
 ```
