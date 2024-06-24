@@ -70,7 +70,7 @@ oc delete project dev-remote
 
 ## Basic Scenario 2: Connect to local & remote service.
 
-In this scenario we will use a local service v1 and automatic failover to a remote service v1 (in another OCP cluster). We will simulate this with scale the local service to zero replica.
+In this scenario we will use a local service v1 and automatic failover to a remote service v1 (in another OCP cluster). We will simulate this by scalling the local service to zero replica.
 
 <img width="558" alt="Screenshot 2024-06-24 at 6 43 33 PM" src="https://github.com/osa-ora/ocp-demos/assets/18471537/35acaa76-1c26-4b9d-8a94-41de6b0bbb65">
 
