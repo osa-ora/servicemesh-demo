@@ -1,6 +1,13 @@
-# Demo(s) for Skupper
+# Skupper Demo(s)
 Red Hat Service Interconnect empowers developers to more seamlessly create trusted connections between services, applications and workloads across environments without requiring complex network reconfigurations or elevated security privileges.
+
 This enables the organization to implements truely open hybrid cloud implementations where they can extend their application services across different cloud/on-premise and utilize different services from different cloud vendors.
+We will explore 2 different basic scenarios where you can extend them and implement more robust architecture for your applications.
+
+Note: You'll need the following to execute the scenarios:
+- Access to 2 OpenShift clusters.
+- OC command line installed.
+- Skupper command line installed (can be installed by running: curl https://skupper.io/install.sh | sh)
 
 
 ## Basic Scenario 1: Extend Services Across 2 Sites: Connect to a remote service
