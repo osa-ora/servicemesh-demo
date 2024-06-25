@@ -1,4 +1,4 @@
-# Basic Demo for Red Hat Service Interconnect (based on Skupper)
+## Basic Demo for Red Hat Service Interconnect (based on Skupper)
 Red Hat Service Interconnect empowers developers to more seamlessly create trusted connections between services, applications and workloads across environments without requiring complex network reconfigurations or elevated security privileges.
 
 This enables the organization to implements truely open hybrid cloud implementations where they can extend their application services across different cloud/on-premise and utilize different services from different cloud vendors.
@@ -12,7 +12,7 @@ Note: You'll need the following to execute the scenarios:
     curl https://skupper.io/install.sh | sh)
   ```
 
-## Basic Scenario 1: Extend Services Across 2 Sites: Connect to a remote service
+### Basic Scenario 1: Extend Services Across 2 Sites: Connect to a remote service
 
 In this scenario we will use a local backend loyalty service v1 or switch to a remote backend loyalty service v2 (in another OCP cluster). Both will be running and the front end service/application can select which one to connect to based on the environment variable "END_POINT": 
 <img width="1045" alt="Screenshot 2024-06-25 at 12 38 54 PM" src="https://github.com/osa-ora/ocp-demos/assets/18471537/ab6906be-6392-4daf-a4d3-bccc4dac8a14">
@@ -87,7 +87,7 @@ skupper delete
 oc delete project dev-remote
 ```
 
-## Basic Scenario 2: Service Failover Across 2 Sites : Connect to a local & remote service for HA
+### Basic Scenario 2: Transparent Service Failover Across 2 Sites : Connect to a local & remote service for HA
 
 In this scenario we will use a local loyalty service v1 and automatic failover to a remote loyalty service v1 (in another/remote OCP cluster). We will simulatea failover by scalling the local loyalty service v1 to a zero replica count.
 
