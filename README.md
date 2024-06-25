@@ -1,19 +1,23 @@
-# Skupper Demo(s)
+# Basic Demo for Red Hat Service Interconnect (based on Skupper)
 Red Hat Service Interconnect empowers developers to more seamlessly create trusted connections between services, applications and workloads across environments without requiring complex network reconfigurations or elevated security privileges.
 
 This enables the organization to implements truely open hybrid cloud implementations where they can extend their application services across different cloud/on-premise and utilize different services from different cloud vendors.
 We will explore 2 different basic scenarios where you can extend them and implement more robust architecture for your applications.
 
 Note: You'll need the following to execute the scenarios:
-- Access to 2 OpenShift clusters.
-- OC command line installed.
-- Skupper command line installed (can be installed by running: curl https://skupper.io/install.sh | sh)
-
+- Access to 2 different OpenShift clusters.
+- OpenShift command line installed (i.e. oc)
+- Skupper command line installed (can be installed by running:
+  ```
+    curl https://skupper.io/install.sh | sh)
+  ```
 
 ## Basic Scenario 1: Extend Services Across 2 Sites: Connect to a remote service
 
 In this scenario we will use a local backend loyalty service v1 or switch to a remote backend loyalty service v2 (in another OCP cluster). Both will be running and the front end service/application can select which one to connect to based on the environment variable "END_POINT": 
 <img width="1045" alt="Screenshot 2024-06-25 at 12 38 54 PM" src="https://github.com/osa-ora/ocp-demos/assets/18471537/ab6906be-6392-4daf-a4d3-bccc4dac8a14">
+
+Use case diagram: 
 
 <img width="572" alt="Screenshot 2024-06-24 at 6 42 55 PM" src="https://github.com/osa-ora/ocp-demos/assets/18471537/2a85e212-42ed-4c90-83c0-7e934d01ec59">
 
@@ -30,6 +34,7 @@ oc label deployment/front-app app.kubernetes.io/part-of=my-application
 oc expose svc/front-app
 ```
 Initialize Skupper in the first cluster with skupper console enabled.
+
 Create a secret token to use in the link between both sites/clusters.
 ```
 skupper init --enable-console --enable-flow-collector --console-auth unsecured
@@ -86,6 +91,8 @@ oc delete project dev-remote
 
 In this scenario we will use a local loyalty service v1 and automatic failover to a remote loyalty service v1 (in another/remote OCP cluster). We will simulatea failover by scalling the local loyalty service v1 to a zero replica count.
 
+Use case diagram: 
+
 <img width="558" alt="Screenshot 2024-06-24 at 6 43 33 PM" src="https://github.com/osa-ora/ocp-demos/assets/18471537/35acaa76-1c26-4b9d-8a94-41de6b0bbb65">
 
 ** Steps:
@@ -102,6 +109,7 @@ oc label deployment/front-app app.kubernetes.io/part-of=my-application
 oc expose svc/front-app
 ```
 Initialize Skupper in the first cluster with skupper console enabled.
+
 Create a secret token to use in the link between both sites/clusters.
 ```
 skupper init --enable-console --enable-flow-collector --console-auth unsecured
