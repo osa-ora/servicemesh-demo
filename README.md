@@ -1,15 +1,17 @@
 ## Basic Demo for Red Hat Service Interconnect (based on Skupper)
 Red Hat Service Interconnect empowers developers to more seamlessly create trusted connections between services, applications and workloads across environments without requiring complex network reconfigurations or elevated security privileges.
 
+<img width="293" alt="Screenshot 2024-06-25 at 4 50 13 PM" src="https://github.com/osa-ora/ocp-skupper-demo/assets/18471537/9ec6bf7a-7530-423b-9ff6-a9a16725baed">
+
 This enables the organization to implements truely open hybrid cloud implementations where they can extend their application services across different cloud/on-premise and utilize different services from different cloud vendors.
 We will explore 2 different basic scenarios where you can extend them and implement more robust architecture for your applications.
 
 Note: You'll need the following to execute the scenarios:
 - Access to 2 different OpenShift clusters.
 - OpenShift command line installed (i.e. oc)
-- Skupper command line installed (can be installed by running:
+- Skupper command line installed which can be installed by running:
   ```
-    curl https://skupper.io/install.sh | sh)
+    curl https://skupper.io/install.sh | sh
   ```
 
 ### Basic Scenario 1: Extend Services Across 2 Sites: Connect to a remote service
@@ -68,7 +70,7 @@ Test the application while using loyalty v1 (on the same first cluster) then loy
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
 // outcome: {"Response:":"{\"account\":1999,\"balance\": 3000, \", app-version: LOCAL1}","Welcome":" guest"}%
 
-//switch frontend app to use loyalty version 2
+//switch frontend app to use loyalty version 2 using END_POINT environment variable
 oc set env deployment/front-app END_POINT=http://loyalty-v2:8080/loyalty/balance/
 
 curl $(oc get route front-app -o jsonpath='{.spec.host}')/front/test/1999
