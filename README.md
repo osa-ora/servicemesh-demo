@@ -27,8 +27,8 @@ Login to first/local cluster and deploy the front-end app, and the backend loyal
 ```
 oc login //first cluster 
 oc new-project dev-local
-oc new-app --name=loyalty-v1 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=LOCAL1
-oc new-app --name=front-app java~https://github.com/osa-ora/ocp-demos --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
+oc new-app --name=loyalty-v1 java~https://github.com/osa-ora/ocp-skupper-demo --context-dir=backend -e APP_VERSION=LOCAL1
+oc new-app --name=front-app java~https://github.com/osa-ora/ocp-skupper-demo --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
 oc label deployment/loyalty-v1 app.kubernetes.io/part-of=my-application
 oc label deployment/front-app app.kubernetes.io/part-of=my-application
 oc expose svc/front-app
@@ -47,7 +47,7 @@ Login to the remote cluster and deploy backend application loyalty v2.
 ```
 oc login //second cluster 
 oc new-project dev-remote
-oc new-app --name=loyalty-v2-remote java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE2
+oc new-app --name=loyalty-v2-remote java~https://github.com/osa-ora/ocp-skupper-demo --context-dir=backend -e APP_VERSION=REMOTE2
 oc label deployment/loyalty-v2 app.kubernetes.io/part-of=my-application
 ```
 Initialize Skupper in the remote cluster, and create a link to the first cluster/site.
@@ -102,8 +102,8 @@ Login to first/local cluster and deploy the front-end app, and the backend loyal
 ```
 oc login //first cluster 
 oc new-project dev-local
-oc new-app --name=loyalty-local-v1 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=LOCAL1
-oc new-app --name=front-app java~https://github.com/osa-ora/ocp-demos --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
+oc new-app --name=loyalty-local-v1 java~https://github.com/osa-ora/ocp-skupper-demo --context-dir=backend -e APP_VERSION=LOCAL1
+oc new-app --name=front-app java~https://github.com/osa-ora/ocp-skupper-demo --context-dir=frontend -e END_POINT=http://loyalty-v1:8080/loyalty/balance/
 oc label deployment/loyalty-v1 app.kubernetes.io/part-of=my-application
 oc label deployment/front-app app.kubernetes.io/part-of=my-application
 oc expose svc/front-app
@@ -122,7 +122,7 @@ Login to remote cluster and deploy loyalty v1 of the backend application
 ```
 oc login //second cluster 
 oc new-project dev-remote
-oc new-app --name=loyalty-remote-v1 java~https://github.com/osa-ora/ocp-demos --context-dir=backend -e APP_VERSION=REMOTE1
+oc new-app --name=loyalty-remote-v1 java~https://github.com/osa-ora/ocp-skupper-demo --context-dir=backend -e APP_VERSION=REMOTE1
 oc label deployment/loyalty-v2 app.kubernetes.io/part-of=my-application
 ```
 Initialize Skupper in the remote cluster, and create a link to the first cluster/site.
