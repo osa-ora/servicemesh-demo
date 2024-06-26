@@ -1,9 +1,11 @@
 ## Basic Demo for Red Hat Service Interconnect (based on Skupper)
 Red Hat Service Interconnect empowers developers to more seamlessly create trusted connections between services, applications and workloads across environments without requiring complex network reconfigurations or elevated security privileges.
 
-<img width="293" alt="Screenshot 2024-06-25 at 4 50 13 PM" src="https://github.com/osa-ora/ocp-skupper-demo/assets/18471537/9ec6bf7a-7530-423b-9ff6-a9a16725baed">
-
 This enables the organization to implements truely open hybrid cloud implementations where they can extend their application services across different cloud/on-premise and utilize different services from different cloud vendors.
+
+<img width="796" alt="Screenshot 2024-06-26 at 10 02 19 AM" src="https://github.com/osa-ora/ocp-skupper-demo/assets/18471537/4b5d4463-96cc-4b13-aadc-eaf240aaf4fe">
+
+
 We will explore 2 different basic scenarios where you can extend them and implement more robust architecture for your applications.
 
 Note: You'll need the following to execute the scenarios:
@@ -59,6 +61,8 @@ skupper status
 skupper link create secret_connect.token --name first-to-second-link
 //to delete this link: skupper link delete first-to-second-link
 ```
+Now, both sites are connected.
+
 Expose the backend loyalty service v2 (in remote cluster) to be usable from the first cluster.
 ```
 skupper expose service/loyalty-v2-remote --address loyalty-v2 --port 8080
@@ -88,6 +92,8 @@ oc project dev-remote
 skupper delete
 oc delete project dev-remote
 ```
+Note: We can also expose a service using the annotation, which enables us to use gitops approach, for example: kubectl annotate service backend "skupper.io/address=van-backend"
+"skupper.io/port=8080" "skupper.io/proxy=tcp" "skupper.io/target=backend", same for site creation using yaml directly or by the operator.
 
 ### Basic Scenario 2: Transparent Service Failover Across 2 Sites : Connect to a local & remote service for HA
 
@@ -134,17 +140,21 @@ skupper status
 skupper link create secret_connect.token --name first-to-second-link
 //to delete this link: skupper link delete first-to-second-link
 ```
-Expose the backend loyalty service v1 (in remote cluster) to be usable from the first cluster (by creating a skupper service and then bind it to the backend loyalty service v1)
-```
-skupper service create loyalty-v1 8080 --protocol http
-skupper service bind loyalty-v1 service loyalty-remote-v1
-//to delete this service: skupper service delete loyalty-v1
-```
-Login to first first and bind the loyalty service v1 to the same skupper service name, so now both local and remote loyalty v1 are wrabbed by skupper service loyalty-v1 and can be used for failover and high availability.
+Now, both sites are connected.
+
+Login to first/local cluster and create skupper service loyalty-v1 and bind it to the local loyalty service v1.
 ```
 oc login //first cluster 
 oc project dev-local
+skupper service create loyalty-v1 8080 --protocol http
+//to delete this service: skupper service delete loyalty-v1
 skupper service bind loyalty-v1 service loyalty-local-v1
+```
+Login to the second cluster and bind the remote backend loyalty service v1 (in remote cluster) to the skupper loyalty-v1 service, so now both local and remote loyalty v1 are wrabbed by skupper service loyalty-v1 and can be used for automatic failover and high availability.
+```
+oc login //second cluster 
+oc new-project dev-remote
+skupper service bind loyalty-v1 service loyalty-remote-v1
 ```
 Test the frontend application while connecting to the local backend loyalty service v1 (on the same cluster) then test the failover to the removte backend loyalty service v1 (on the remote cluster) by scalling the local loyalty service v1 to zero replica count.
 ```
