@@ -2,7 +2,7 @@
 
 Red Hat Service Interconnect empowers developers to more seamlessly create trusted connections between services, applications and workloads across environments without requiring complex network reconfigurations or elevated security privileges.
 
-This enables the organization to implements truely open hybrid cloud implementations where they can extend their application services across different cloud/on-premise and utilize different services from different cloud vendors.
+This enables the organization to implements truly open hybrid cloud implementations where they can extend their application services across different cloud/on-premise and utilize different services from different cloud vendors.
 
 <img width="796" alt="Screenshot 2024-06-26 at 10 02 19 AM" src="https://github.com/osa-ora/ocp-skupper-demo/assets/18471537/4b5d4463-96cc-4b13-aadc-eaf240aaf4fe">
 
