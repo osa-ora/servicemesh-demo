@@ -94,18 +94,25 @@ shp build run backend-v1-build --follow
 shp build run backend-v2-build --follow
 
 //Deploy the application components (Deployment object)
-oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/front-deployment.yaml
-oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-deployment-v1.yaml
-oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-deployment-v2.yaml
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/front-deployment.yaml -n dev
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-deployment-v1.yaml -n dev
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-deployment-v2.yaml -n dev
 
 //Create Service Object
+oc expose deployment/front-app --port=8080 --target-port=8080 --name=front-app -n dev
+//oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/loyalty-service.yaml -n dev
+oc expose deployment/loyalty-v1 --port=8080 --target-port=8080 --name=loyalty-v1 -n dev
+oc expose deployment/loyalty-v2 --port=8080 --target-port=8080 --name=loyalty-v2 -n dev
 
 //Create Application Gateway
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/app-gateway.yaml -n dev
 
 //Create Virtual Services
+oc apply -f https://github.com/osa-ora/servicemesh-demo/blob/main/gitops/front-virtual-service.yaml -n dev
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-virtual-service.yaml -n dev
 
 //Create Distination rules
-
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/loyalty-dest-rule.yaml -n dev
 
 ```
 
