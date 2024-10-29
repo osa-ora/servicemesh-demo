@@ -81,11 +81,11 @@ spec:
 //Make Sure the Builds for Red Hat OpenShift Operator is installed.
 
 //create shipwright build for our front-app application in the 'dev' project
-shp build create front-app-build --strategy-name="source-to-image" --source-url="https://github.com/osa-ora/servicemesh-demo" --source-context-dir="frontend" --output-image="image-registry.openshift-image-registry.svc:5000/dev/front-app" --builder-image="image-registry.openshift-image-registry.svc:5000/openshift/java:11"
+shp build create front-app-build --strategy-name="source-to-image" --source-url="https://github.com/osa-ora/servicemesh-demo" --source-context-dir="frontend" --output-image="image-registry.openshift-image-registry.svc:5000/dev/front-app" --builder-image="image-registry.openshift-image-registry.svc:5000/openshift/java:openjdk-17-ubi8"
 
-shp build create backend-v1-build --strategy-name="source-to-image" --source-url="https://github.com/osa-ora/servicemesh-demo" --source-context-dir="backend" --output-image="image-registry.openshift-image-registry.svc:5000/dev/backend-v1" --builder-image="image-registry.openshift-image-registry.svc:5000/openshift/java:11"
+shp build create backend-v1-build --strategy-name="source-to-image" --source-url="https://github.com/osa-ora/servicemesh-demo" --source-context-dir="backend" --output-image="image-registry.openshift-image-registry.svc:5000/dev/backend-v1" --builder-image="image-registry.openshift-image-registry.svc:5000/openshift/java:openjdk-17-ubi8"
 
-shp build create backend-v2-build --strategy-name="source-to-image" --source-url="https://github.com/osa-ora/servicemesh-demo" --source-context-dir="backend" --output-image="image-registry.openshift-image-registry.svc:5000/dev/backend-v2" --builder-image="image-registry.openshift-image-registry.svc:5000/openshift/java:11"
+shp build create backend-v2-build --strategy-name="source-to-image" --source-url="https://github.com/osa-ora/servicemesh-demo" --source-context-dir="backend" --output-image="image-registry.openshift-image-registry.svc:5000/dev/backend-v2" --builder-image="image-registry.openshift-image-registry.svc:5000/openshift/java:openjdk-17-ubi8"
 
 
 //start the build and follow the output
@@ -100,16 +100,16 @@ oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/head
 
 //Create Service Object
 oc expose deployment/front-app --port=8080 --target-port=8080 --name=front-app -n dev
-//oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/loyalty-service.yaml -n dev
-oc expose deployment/loyalty-v1 --port=8080 --target-port=8080 --name=loyalty-v1 -n dev
-oc expose deployment/loyalty-v2 --port=8080 --target-port=8080 --name=loyalty-v2 -n dev
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/loyalty-service.yaml -n dev
+//oc expose deployment/loyalty-v1 --port=8080 --target-port=8080 --name=loyalty-v1 -n dev
+//oc expose deployment/loyalty-v2 --port=8080 --target-port=8080 --name=loyalty-v2 -n dev
 
 //Create Application Gateway
 oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/app-gateway.yaml -n dev
 
 //Create Virtual Services
 oc apply -f https://github.com/osa-ora/servicemesh-demo/blob/main/gitops/front-virtual-service.yaml -n dev
-oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-virtual-service.yaml -n dev
+//oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-virtual-service.yaml -n dev
 
 //Create Distination rules
 oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/loyalty-dest-rule.yaml -n dev
