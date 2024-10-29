@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: front-virtualservice
+spec:
+  gateways:
+    - app-gateway
+  hosts:
+    - '*'
+  http:
+    - match:
+        - uri:
+            prefix: /front
+        - uri:
+            prefix: /static
+      route:
+        - destination:
+            host: front-app
+            port:
+              number: 8080
