@@ -94,7 +94,9 @@ shp build run backend-v1-build --follow
 shp build run backend-v2-build --follow
 
 //Deploy the application components (Deployment object)
-
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/front-deployment.yaml
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-deployment-v1.yaml
+oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/backend-deployment-v2.yaml
 
 //Create Service Object
 
