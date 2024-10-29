@@ -10,7 +10,8 @@ Note: You'll need the following to execute the scenarios:
 - Access to an OpenShift cluster.
 - OpenShift command line installed (i.e. oc or Webterminal operator)
 - ServiceMesh Installed using the operators.
-
+- For 2nd Scenario, Builds for Red Hat OpenShift Operator is installed.
+  
 ### Basic Scenario 1: Bookinfo Project
 ---
 
@@ -38,7 +39,7 @@ oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-
 //Create application gateway
 oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-$MESH_VERSION/samples/bookinfo/networking/bookinfo-gateway.yaml
 
-//Get the Gateway route:
+//Get the Gateway route: (Note: change the namespace to the istio control-plane namespace
 export GATEWAY_URL=$(oc -n istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}')
 
 //Define Virtual Service and Destination rules:
@@ -114,6 +115,13 @@ oc apply -f https://github.com/osa-ora/servicemesh-demo/blob/main/gitops/front-v
 //Create Distination rules
 oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/loyalty-dest-rule.yaml -n dev
 
+export GATEWAY_URL=$(oc -n user1-istio get route istio-ingressgateway -o jsonpath='{.spec.host}')
+
+curl "http://$GATEWAY_URL/front/test/1999"
+
 ```
+
+<img width="764" alt="Screenshot 2024-10-29 at 9 46 00 PM" src="https://github.com/user-attachments/assets/2a3adcab-2d64-4d8e-81de-fe5525df4609">
+
 
 
