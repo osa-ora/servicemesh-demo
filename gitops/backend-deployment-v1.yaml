@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: loyalty-be-v1
+  name: loyalty-v1
   namespace: dev
   labels:
     app: loyalty
@@ -31,7 +31,7 @@ spec:
               protocol: TCP
           env:
             - name: APP_VERSION
-              value: LOCAL1
+              value: V1
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
