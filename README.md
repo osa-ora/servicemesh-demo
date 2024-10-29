@@ -57,7 +57,7 @@ echo "http://$GATEWAY_URL/productpage"
 ### Basic Scenario 2: Custom Project
 ---
 
-In this scenario we will use our custom resources to build and deploy our application to utilize the service mesh.
+In this scenario we will use our custom resources to build and deploy our application to utilize the service mesh, we have a front app that call backend service (we will have 2 versions of that backend service).
 
 ** Steps:
 
@@ -115,8 +115,10 @@ oc apply -f https://github.com/osa-ora/servicemesh-demo/blob/main/gitops/front-v
 //Create Distination rules
 oc apply -f https://raw.githubusercontent.com/osa-ora/servicemesh-demo/refs/heads/main/gitops/loyalty-dest-rule.yaml -n dev
 
+//Get the Gateway route: (Note: change the namespace to the istio control-plane namespace
 export GATEWAY_URL=$(oc -n user1-istio get route istio-ingressgateway -o jsonpath='{.spec.host}')
 
+//Test the front application
 curl "http://$GATEWAY_URL/front/test/1999"
 
 ```
