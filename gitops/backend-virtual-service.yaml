@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: backend
+spec:
+  hosts:
+    - loyalty
+  http:
+    - route:
+        - destination:
+            host: loyalty
+            subset: v1
+    - route:
+        - destination:
+            host: loyalty
+            subset: v2
