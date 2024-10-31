@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/front")
@@ -29,8 +31,17 @@ public class FrontController {
     public HashMap testApp(@PathVariable(value = "account") Integer account) {
 		String apiUrl = endPoint+account;
 		System.out.println("End point:"+apiUrl);
-        String response = restTemplate.getForObject(apiUrl, String.class);
-		System.out.println("Get Last Transactions for account from url: "+response);
+        String response = "";
+	ResponseEntity<String> restResponse = restTemplate.getForEntity(apiUrl, String.class); // use getForEntity to get ResponseEntity
+	
+	if (restResponse.getStatusCode() == HttpStatus.OK) {
+	    response = restResponse.getBody();
+	} else {
+	    response = "Error: " + restResponse.getStatusCode() + " " + restResponse.getStatusCode().getReasonPhrase();
+	    // Handle based on status code if needed
+	}
+	System.out.println("Get Current Balance for account from url: " + response);
+
         return new HashMap(){{
             put("Welcome"," guest");
             put("Response:",response);
