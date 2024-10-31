@@ -28,7 +28,7 @@ public class FrontController {
     }
 
 	@GetMapping(path = "/test/{account}")
-    public HashMap testApp(@PathVariable(value = "account") Integer account) {
+    public String testApp(@PathVariable(value = "account") Integer account) {
 		String apiUrl = endPoint+account;
 		System.out.println("End point:"+apiUrl);
         String response = "";
@@ -42,10 +42,8 @@ public class FrontController {
 	}
 	System.out.println("Get Current Balance for account from url: " + response);
 
-        return new HashMap(){{
-            put("Welcome"," guest");
-            put("Response:",response);
-        }};
+        Mreturn response;
+        
     }
 
 	@GetMapping(path = "/")
