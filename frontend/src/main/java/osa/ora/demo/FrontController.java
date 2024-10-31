@@ -37,7 +37,7 @@ public class FrontController {
 	if (restResponse.getStatusCode() == HttpStatus.OK) {
 	    response = restResponse.getBody();
 	} else {
-	    response = "Error: " + restResponse.getStatusCode() + " " + restResponse.getStatusCode().getReasonPhrase();
+	    response = "Error: " + restResponse.getStatusCode() + " " + restResponse.getBody();
 	    // Handle based on status code if needed
 	}
 	System.out.println("Get Current Balance for account from url: " + response);
